@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Student Management System – Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React frontend for the Student Management System. Uses React Router, Axios, and Tailwind CSS.
 
-## Available Scripts
+## Folder structure
 
-In the project directory, you can run:
+```
+src/
+├── api/
+│   └── api.js           # Axios instance + all API calls (students, courses, enrollments, auth)
+├── components/
+│   ├── Button.js        # Reusable button (primary, secondary, danger, ghost)
+│   ├── Card.js          # Card container with optional title
+│   ├── ErrorMessage.js  # Error banner with optional retry
+│   ├── Input.js         # Labeled input with error state
+│   ├── Layout.js        # Header nav + main content wrapper
+│   ├── Loading.js        # Spinner + message
+│   ├── Modal.js         # Modal dialog (e.g. delete confirm)
+│   └── ProtectedRoute.js # Optional JWT protection (toggle via REQUIRE_AUTH)
+├── context/
+│   └── AuthContext.js   # Auth state + login/logout (JWT in localStorage)
+├── pages/
+│   ├── Dashboard.js     # Stats cards (students, courses, enrollments)
+│   ├── Students.js      # List, search, delete; link to add/edit
+│   ├── StudentForm.js   # Add/Edit student with validation
+│   ├── Courses.js       # List courses
+│   ├── Enroll.js        # Enroll student in course + list enrollments
+│   └── Login.js         # Login page (when JWT auth enabled)
+├── App.js               # Routes + AuthProvider + Layout
+├── index.js
+└── index.css            # Tailwind directives
+```
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Run
 
-### `npm test`
+```bash
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs at [http://localhost:3000](http://localhost:3000). Set the backend base URL in `src/api/api.js` (default: `http://localhost:5000/api`).
 
-### `npm run build`
+## Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Dashboard** – Counts for students, courses, enrollments (from API or derived from list endpoints).
+- **Students** – List, search by name/email, delete with confirmation, add/edit form with validation.
+- **Courses** – List courses.
+- **Enroll** – Select student + course to enroll; list and unenroll.
+- **Protected routes** – Wrapped in `ProtectedRoute`; set `REQUIRE_AUTH = true` in `ProtectedRoute.js` when your backend uses JWT.
+- **UI** – Loading states, error messages with retry, Tailwind-based layout.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Enabling JWT protection
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. In `src/components/ProtectedRoute.js`, set `REQUIRE_AUTH = true`.
+2. Ensure the backend exposes `/api/auth/login` and returns a JWT and `/api/auth/me` for the current user.
+3. The axios instance in `src/api/api.js` sends `Authorization: Bearer <token>` and redirects to `/login` on 401.
