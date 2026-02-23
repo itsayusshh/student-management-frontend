@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Card from '../components/Card';
-import Button from '../components/Button';
-import Input from '../components/Input';
-import ErrorMessage from '../components/ErrorMessage';
-import { useAuth } from '../context/AuthContext';
-import { login as apiLogin } from '../api/api';
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import Card from "../components/Card";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import ErrorMessage from "../components/ErrorMessage";
+import { useAuth } from "../context/AuthContext";
+import { login as apiLogin } from "../api/api";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,10 +29,10 @@ export default function Login() {
         login(token, userData);
         navigate(from, { replace: true });
       } else {
-        setError('Invalid response from server');
+        setError("Invalid response from server");
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Login failed');
+      setError(err.response?.data?.message || err.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -60,11 +60,14 @@ export default function Login() {
             required
           />
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? "Signing in..." : "Sign in"}
           </Button>
           <p className="mt-4 text-center text-sm text-slate-600">
-            Don&apos;t have an account?{' '}
-            <Link to="/register" className="font-medium text-primary-600 hover:text-primary-700">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/register"
+              className="font-medium text-primary-600 hover:text-primary-700"
+            >
               Register
             </Link>
           </p>
